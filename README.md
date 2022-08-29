@@ -20,7 +20,7 @@ The project is a simple health care REST API but with some minimum rules to make
 - Must be deployed somewhere
 - Must have tests
 - Must have CI/CD
-- Must use ORM of respective language's framework
+- Must use the respective ORM of language's framework
 
 
 ## entities 
