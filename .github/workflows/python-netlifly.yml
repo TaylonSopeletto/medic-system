@@ -1,20 +1,24 @@
-name: Build
+name: Docker
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
- deploy:
-   name: Deploy
-   runs-on: ubuntu-latest
 
-   steps:
-     - uses: actions/checkout@v1
-     - uses: actions-hub/gcloud@master
-       env:
-         PROJECT_ID: ${{secrets.PYTHON_PROD_ID}}
-         APPLICATION_CREDENTIALS: ${{secrets.GCLOUD_GITHUB_CREDENTIALS}}
-       with:
-         args: app deploy app.yaml
+    deploy:
+
+        name: Setup Gcloud Account
+        runs-on: ubuntu-latest
+        env:
+          IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_APP_NAME }}
+        steps:
+
+        - name: Login
+          uses: google-github-actions/setup-gcloud@v0
+          with:
+            project_id: ${{ secrets.GCP_PROJECT_ID }}
+            service_account_email: ${{ secrets.GCP_EMAIL }}
+            service_account_key: ${{ secrets.GCP_CREDENTIALS }}
