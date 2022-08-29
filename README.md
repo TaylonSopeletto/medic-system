@@ -4,6 +4,16 @@ I've decided to create same project in different languages so i could figure out
 The project is a simple health care REST API but with some minimum rules to make it looks like a real world project.
 
 
+## languages
+
+- java
+- javascript
+- python
+- go
+- elixir
+- rust
+
+
 ## rules
 
 - Must have JWT authentication
