@@ -1,10 +1,10 @@
-package controller
+package controllers
 
 import (
 	"net/http"
 	"github.com/labstack/echo/v4"
-	"https://github.com/TaylonSopeletto/medic-system/go/model"
-	"https://github.com/TaylonSopeletto/medic-system/go/storage"
+	"github.com/TaylonSopeletto/medic-system/go/models"
+	"github.com/TaylonSopeletto/medic-system/go/storage"
 )
 
 func GetPatients(c echo.Context) error {
