@@ -5,7 +5,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/TaylonSopeletto/medic-system/go/controllers"
-	"github.com/TaylonSopeletto/medic-system/go/models"
+	"github.com/TaylonSopeletto/medic-system/go/storage"
 )
 
 func main() {
@@ -18,7 +18,7 @@ func main() {
 
 	// Routes
 	e.GET("/", hello)
-	e.GET("/patients", controller.GetPatients)
+	e.GET("/patients", controllers.GetPatients)
 
 	// Start server
 	e.Logger.Fatal(e.Start(":1323"))

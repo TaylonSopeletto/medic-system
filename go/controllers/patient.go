@@ -12,9 +12,9 @@ func GetPatients(c echo.Context) error {
 	return c.JSON(http.StatusOK, patients)
 }
 
-func GetRepoPatients() ([]model.Patients, error) {
+func GetRepoPatients() ([]models.Patients, error) {
 	db := storage.GetDBInstance()
-	patients := []model.Patients{}
+	patients := []models.Patients{}
 
 	if err := db.Find(&patients).Error; err != nil {
 		return nil, err
