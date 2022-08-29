@@ -1,2 +1,2 @@
 from .patient import *
-from .patient import *
+from .doctor import *
