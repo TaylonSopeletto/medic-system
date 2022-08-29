@@ -1,67 +1,81 @@
 package main
 
 import (
-    "net/http"
+	"net/http"
+	"strconv"
 
-    "github.com/gin-gonic/gin"
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
-// album represents data about a record album.
-type album struct {
-    ID     string  `json:"id"`
-    Title  string  `json:"title"`
-    Artist string  `json:"artist"`
-    Price  float64 `json:"price"`
+type (
+	user struct {
+		ID   int    `json:"id"`
+		Name string `json:"name"`
+		Salary int `json:"salary"`
+	}
+)
+
+var (
+	users = map[int]*user{}
+	seq   = 1
+)
+
+//----------
+// Handlers
+//----------
+
+func createUser(c echo.Context) error {
+	u := &user{
+		ID: seq,
+	}
+	if err := c.Bind(u); err != nil {
+		return err
+	}
+	users[u.ID] = u
+	seq++
+	return c.JSON(http.StatusCreated, u)
 }
 
-// albums slice to seed record album data.
-var albums = []album{
-    {ID: "1", Title: "Blue Train", Artist: "John Coltrane", Price: 56.99},
-    {ID: "2", Title: "Jeru", Artist: "Gerry Mulligan", Price: 17.99},
-    {ID: "3", Title: "Sarah Vaughan and Clifford Brown", Artist: "Sarah Vaughan", Price: 39.99},
+func getUser(c echo.Context) error {
+	id, _ := strconv.Atoi(c.Param("id"))
+	return c.JSON(http.StatusOK, users[id])
+}
+
+func updateUser(c echo.Context) error {
+	u := new(user)
+	if err := c.Bind(u); err != nil {
+		return err
+	}
+	id, _ := strconv.Atoi(c.Param("id"))
+	users[id].Name = u.Name
+	return c.JSON(http.StatusOK, users[id])
+}
+
+func deleteUser(c echo.Context) error {
+	id, _ := strconv.Atoi(c.Param("id"))
+	delete(users, id)
+	return c.NoContent(http.StatusNoContent)
+}
+
+func getAllUsers(c echo.Context) error {
+	return c.JSON(http.StatusOK, users)
 }
 
 func main() {
-    router := gin.Default()
-    router.GET("/albums", getAlbums)
-    router.GET("/albums/:id", getAlbumByID)
-    router.POST("/albums", postAlbums)
+	e := echo.New()
 
-    router.Run("localhost:8080")
-}
+	// Middleware
+	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
 
-// getAlbums responds with the list of all albums as JSON.
-func getAlbums(c *gin.Context) {
-    c.IndentedJSON(http.StatusOK, albums)
-}
+	// Routes
+	e.GET("/users", getAllUsers)
+	e.POST("/users", createUser)
+	e.GET("/users/:id", getUser)
+	e.PUT("/users/:id", updateUser)
+	e.DELETE("/users/:id", deleteUser)
 
-// postAlbums adds an album from JSON received in the request body.
-func postAlbums(c *gin.Context) {
-    var newAlbum album
-
-    // Call BindJSON to bind the received JSON to
-    // newAlbum.
-    if err := c.BindJSON(&newAlbum); err != nil {
-        return
-    }
-
-    // Add the new album to the slice.
-    albums = append(albums, newAlbum)
-    c.IndentedJSON(http.StatusCreated, newAlbum)
-}
-
-// getAlbumByID locates the album whose ID value matches the id
-// parameter sent by the client, then returns that album as a response.
-func getAlbumByID(c *gin.Context) {
-    id := c.Param("id")
-
-    // Loop through the list of albums, looking for
-    // an album whose ID value matches the parameter.
-    for _, a := range albums {
-        if a.ID == id {
-            c.IndentedJSON(http.StatusOK, a)
-            return
-        }
-    }
-    c.IndentedJSON(http.StatusNotFound, gin.H{"message": "album not found"})
+	// Start server
+	e.Logger.Fatal(e.Start(":1323"))
 }
