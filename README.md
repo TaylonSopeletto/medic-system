@@ -12,7 +12,7 @@ The project is a simple health care REST API but with some minimum rules to make
 - elixir
 
 
-## rules
+## requirement
 
 - Must have JWT authentication
 - Must be deployed somewhere
@@ -28,5 +28,15 @@ The project is a simple health care REST API but with some minimum rules to make
 - exams
 
 
+## Diagram
+
+![diagram](https://github.com/TaylonSopeletto/medid-system/blob/main/images/diagram.png)
+
+
+## business logic
+
+- 1 to 1 relationship: user/doctor and user/patient.
+- Many to many relationship: patient/doctor.
+- Doctor users can change patient informations but patient users cant change doctor's information
 
 Created by TaylonSopeletto
