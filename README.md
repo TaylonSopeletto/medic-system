@@ -28,7 +28,7 @@ The project is a simple health care REST API but with some minimum rules to make
 - exams
 
 
-## Diagram
+## diagram
 
 ![diagram](https://github.com/TaylonSopeletto/medic-system/blob/main/images/diagram.jpg)
 
