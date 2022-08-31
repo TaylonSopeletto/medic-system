@@ -9,7 +9,7 @@ The project is a simple health care REST API but with some minimum rules to make
 - java
 - typescript
 - python
-- elixir
+- php
 
 
 ## requirement
