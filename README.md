@@ -30,7 +30,7 @@ The project is a simple health care REST API but with some minimum rules to make
 
 ## Diagram
 
-![diagram](https://github.com/TaylonSopeletto/medid-system/blob/main/images/diagram.png)
+![diagram](https://github.com/TaylonSopeletto/medid-system/blob/main/images/diagram.jpg)
 
 
 ## business logic
